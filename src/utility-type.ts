@@ -28,7 +28,11 @@ type MyNonNullable<T> = T extends null | undefined ? never : T
 
 type MyParameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never
 
-type MyConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => any ? P : never
+type MyConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (
+  ...args: infer P
+) => any
+  ? P
+  : never
 
 type MyReturnType<T extends (...args: any) => any> = T extends () => infer R ? R : any
 
@@ -36,4 +40,8 @@ type MyInstanceType<T extends abstract new (...args: any) => any> = T extends ab
 
 type MyThisParameterType<T> = T extends (this: infer U, ...args: never) => any ? U : unknown
 
-type MyOmitThisParameterType<T> = unknown extends MyThisParameterType<T> ? T : T extends (this: any, ...args: infer U) => infer R ? (...args: U) => R : T
+type MyOmitThisParameterType<T> = unknown extends MyThisParameterType<T>
+  ? T
+  : T extends (this: any, ...args: infer U) => infer R
+  ? (...args: U) => R
+  : T
